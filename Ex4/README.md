@@ -62,7 +62,9 @@ To install Policy Reporter UI on a Kubernetes/Openshift cluster from a local Hel
 5. **Add the Policy Reporter Helm chart from the local folder:**
    - From the `policy-reporter` directory, run the following command to install the Policy-Reporter Helm chart from the local folder:
    ```bash
-   helm install policy-reporter . -n kyverno
+   oc project kyverno
+   
+   helm install policy-reporter . --set kyvernoPlugin.enabled=true --set ui.enabled=true --set ui.plugins.kyverno=true -n kyverno
    ```
    - Wait for the installation to complete. You can check the status using `helm ls -n kyverno` or `kubectl get pods -n kyverno` to see if all the Kyverno components are running.
    - Desired Output:
@@ -70,9 +72,9 @@ To install Policy Reporter UI on a Kubernetes/Openshift cluster from a local Hel
    helm ls -n kyverno
 
    # OUTPUT
-   # NAME   	           NAMESPACE	REVISION	STATUS  	CHART        	APP VERSION
-   # kyverno	           kyverno  	1       	deployed	kyverno-x.x.x	vx.x.x     
-   # policy-reporter      kyverno   1        deployed 
+   # NAME   	           NAMESPACE	REVISION	STATUS  	CHART        	          APP VERSION
+   # kyverno	           kyverno  	1       	deployed	kyverno-x.x.x	          x.x.x     
+   # policy-reporter      kyverno   1        deployed policy-reporter-x.x.x    x.x.x
    ```
 6. **Verify the Policy Reporter installation:**
    - Check if the **3** Policy Reporter pods are running by running `kubectl get pods -n kyverno`.
@@ -81,11 +83,23 @@ To install Policy Reporter UI on a Kubernetes/Openshift cluster from a local Hel
    kubectl get pods -n kyverno
 
    # OUTPUT
-   # NAME                             READY   STATUS    
-   # kyverno-xxx                      1/1     Running   
-   # kyverno-xxx                      1/1     Running   
-   # kyverno-xxx                      1/1     Running   
-   # kyverno-cleanup-controller-xxx   1/1     Running
+   # NAME                                              READY   STATUS 
+   # kyverno-5485c74745-44tm9                          1/1     Running
+   # kyverno-5485c74745-5kvsb                          1/1     Running
+   # kyverno-5485c74745-prwjz                          1/1     Running
+   # kyverno-cleanup-controller-7cb987f894-vxh48       1/1     Running
+   # policy-reporter-7d86f645bf-d649l                  1/1     Running
+   # policy-reporter-kyverno-plugin-66bbb7f6c9-7kfl9   1/1     Running
+   # policy-reporter-ui-767cdc9c7-87vlp                1/1     Running
+   
+   kubectl get deployment -n kyverno
+   # NAME                             READY   UP-TO-DATE   AVAILABLE   
+   # kyverno                          3/3     3            3           
+   # kyverno-cleanup-controller       1/1     1            1           
+   # policy-reporter                  1/1     1            1           
+   # policy-reporter-kyverno-plugin   1/1     1            1           
+   # policy-reporter-ui               1/1     1            1           
+
    
    ```
 
