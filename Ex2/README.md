@@ -1,16 +1,194 @@
-# Exercise 2 - Kyverno Policies - Types & PreConfigured policies
-In this exercise each student will deploy a few policies & test them and their behavior, so he/she will have a better understanding of the different types of policies that Kyverno provides.
+# Exercise #2: Deploying and Testing Kyverno Policies
 
-In this exercise the student will rely on the Kyverno PreConfigured Policies bank.
+# Objective
+Deploy and test Kyverno policies for verification, mutation, and creation on a Kubernetes cluster with Kyverno installed.
 
-Finaly, the student will see the `violation reports` Kyverno creates for each policy
+# Notes
+We will be using the [Kyverno's official policies bank](https://kyverno.io/policies/)
 
-## Instructions
-0. 
-1. 
-2. 
-3. 
-4. 
-5. 
+# Prerequisites
+1. A Kubernetes cluster with Kyverno installed (refer to Exercise #1 for installation instructions)
+2. Make Policies dir next to the `kyverno` dir
+   ```bash
+   mkdir kyverno-policies
 
+   ls
+   # OUTPUT
+   # kyverno kyverno-policies
+
+   cd kyverno-policies
+   ```
+3. Create testing namespace
+```bash
+oc new-project test
+```
+
+# The policies we will test
+
+  - **Policy #1**
+    * **Name:** Disallow Latest Tag
+    * **Type:** Validate
+    * **Description:** The ':latest' tag is mutable and can lead to unexpected errors if the image changes. A best practice is to use an immutable tag that maps to a specific version of an application Pod. This policy validates that the image specifies a tag and that it is not called `latest`.
+    * [Kyverno.io Link](https://kyverno.io/policies/best-practices/disallow-latest-tag/disallow-latest-tag/)
+    * [GitHub Link](https://github.com/kyverno/policies/tree/main/best-practices/disallow-latest-tag)
+    > Note! The GitHub link holds preconfigured testing YAMLs you can use
+    * [GitHub raw Link](https://raw.githubusercontent.com/kyverno/policies/main/best-practices/disallow-latest-tag/disallow-latest-tag.yaml)
+ 
+  - **Policy #2**
+    * **Name:** Add Default Resources
+    * **Type:** Mutate
+    * **Description:** Pods which don't specify at least resource requests are assigned a QoS class of BestEffort which can hog resources for other Pods on Nodes. At a minimum, all Pods should specify resource requests in order to be labeled as the QoS class Burstable. This sample mutates any container in a Pod which doesn't specify memory or cpu requests to apply some sane defaults.
+    * [Kyverno.io Link](https://kyverno.io/policies/other/add-default-resources/add-default-resources/)
+    * [GitHub Link](https://github.com/kyverno/policies/tree/main/other/add-default-resources)
+    > Note! The GitHub link holds preconfigured testing YAMLs you can use
+    * [GitHub raw Link](https://raw.githubusercontent.com/kyverno/policies/main/other/add-default-resources/add-default-resources.yaml)
+    
+- **Policy #3**
+    * **Name:** Add Network Policy
+    * **Type:** Generate/Create
+    * **Description:** By default, Kubernetes allows communications across all Pods within a cluster. The NetworkPolicy resource and a CNI plug-in that supports NetworkPolicy must be used to restrict communications. A default NetworkPolicy should be configured for each Namespace to default deny all ingress and egress traffic to the Pods in the Namespace. Application teams can then configure additional NetworkPolicy resources to allow desired traffic to application Pods from select sources. This policy will create a new NetworkPolicy resource named `default-deny` which will deny all traffic anytime a new Namespace is created.
+    * [Kyverno.io Link](https://kyverno.io/policies/best-practices/add-network-policy/add-network-policy/)
+    * [GitHub Link](https://github.com/kyverno/policies/tree/main/best-practices/add-network-policy)
+    * [GitHub raw Link](https://raw.githubusercontent.com/kyverno/policies/main/best-practices/add-network-policy/add-network-policy.yaml)
+
+
+# Policy 1 Testing Steps
+1. Pull the example policy: 
+> Note! The following commands to pull the raw YAML file of the policy
+
+```bash
+pwd
+# OUTPUT
+# /Path/To/kyverno-policies
+
+wget https://raw.githubusercontent.com/kyverno/policies/main/best-practices/disallow-latest-tag/disallow-latest-tag.yaml
+```
+
+2. Edit the validate policy to enforce mode (the other policies are enforced by default)
+```bash
+sed -i 's/^  validationFailureAction: audit.*/  validationFailureAction: enforce/' disallow-latest-tag.yaml
+```
+
+3. Deploy a pod with "latest" tag before apply the policy
+```bash
+cat > deployment.yaml << EOF 
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx
+spec:
+  selector:
+    matchLabels:
+      app: nginx
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:latest
+        ports:
+        - containerPort: 80
+EOF
+
+oc apply -f deployment.yaml
+```
+
+
+3. Test the validation policy "Disallow Latest Tag" & Check the policyReport generated by Kyverno
+```bash
+oc apply -f disallow-latest-tag.yaml -n test
+
+sleep 30s
+
+oc get policyreports.wgpolicyk8s.io -n test
+# OUTPUT
+# NAME                       PASS   FAIL   WARN   ERROR   SKIP
+# cpol-disallow-latest-tag   3      3      0      0       0   
+
+oc get policyreports.wgpolicyk8s.io -A
+
+oc get policyreports.wgpolicyk8s.io cpol-disallow-latest-tag -n test -o yaml
+
+oc delete -f deployment.yaml -n test
+
+oc apply -f deployment.yaml -n test
+# OUTPUT
+# Error from server: error when creating "deployment.yaml": admission webhook "validate.kyverno.svc-fail" denied the request: 
+
+# policy Deployment/test/nginx for resource violation: 
+
+# disallow-latest-tag:
+#   autogen-validate-image-tag: 'validation error: Using a mutable image tag e.g. ''latest''
+#     is not allowed. rule autogen-validate-image-tag failed at path /spec/template/spec/containers/0/image/'
+
+oc delete -f disallow-latest-tag.yaml -n test
+```
+
+---
+# Policy 2 Testing Steps
+1. Pull the example policy: 
+> Note! The following commands to pull the raw YAML file of the policy
+
+```bash
+pwd
+# OUTPUT
+# /Path/To/kyverno-policies
+
+wget https://raw.githubusercontent.com/kyverno/policies/main/other/add-default-resources/add-default-resources.yaml
+```
+
+* There is no need to edit a mutate policy to enforce mode because it is enforced by default)
+
+2. Apply the policy
+```bash
+oc apply -f add-default-resources.yaml -n test
+```
+3. Deploy a pod with the missing resources limits & requests
+```bash
+oc apply -f deployment.yaml
+```
+4. Take a look inside deployed pod's YAML file and see the new fields that our policy added to it
+```bash
+oc get pods -o name | grep -v NAME | xargs oc get -o jsonpath='{.spec.containers[].resources}'
+```
+5. Cleanup - Delete all
+```bash
+oc delete -f deployment.yaml
+oc delete -f add-default-resources.yaml -n test
+```
+---
+# Policy 3 Testing Steps
+1. Pull the example policy: 
+> Note! The following commands to pull the raw YAML file of the policy
+
+```bash
+pwd
+# OUTPUT
+# /Path/To/kyverno-policies
+
+wget https://raw.githubusercontent.com/kyverno/policies/main/best-practices/add-network-policy/add-network-policy.yaml
+```
+
+* There is no need to edit a generate policy to enforce mode because it is enforced by default)
+
+2. Apply the policy
+```bash
+oc apply -f add-network-policy.yaml -n test
+```
+3. Create new namespace
+```bash
+oc create namespace test-generate-policy
+```
+4. Take a look if there are any new NetworkPolicy objects inside the newly created namespace
+```bash
+oc get networkpolicy -n test-generate-policy
+```
+5. Cleanup - Delete all
+```bash
+oc delete namespace test-generate-policy
+oc delete -f add-network-policy.yaml -n test
+```
 
