@@ -1,11 +1,9 @@
-# Exercise 1 - Kyverno Installation
-In this exercise each student will install Kyverno on an Openshift cluster;
-
-
 # Exercise 1 : Installing Kyverno Helm Chart on Kubernetes Cluster
 
 ## Objective
 To install Kyverno, a Kubernetes native policy management tool, using the Helm package manager on a Kubernetes/Openshift cluster from a local Helm chart.
+
+[Link to the opensource project](https://kyverno.io/)
 
 # Notes!
 1. We are going to pull the Kyverno `helm chart` locally and edit the values file to fit our demands. This is also the procedure to install it in a disconnected environment.
@@ -31,7 +29,8 @@ To install Kyverno, a Kubernetes native policy management tool, using the Helm p
    - Obtain the Kyverno Helm chart package (e.g., `.tgz` or `.tar.gz`) and place it in a local folder accessible on your machine (e.g., `kyverno/`).
    ```bash
    helm repo add kyverno https://kyverno.github.io/kyverno/
-   
+   helm repo update
+
    helm pull kyverno/kyverno
    
    ls 
