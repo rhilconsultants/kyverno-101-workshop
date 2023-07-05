@@ -1,6 +1,6 @@
 # Exercise 5: Part 1 - Installing ACM
 Follow the medium document and install acm via the UI in the Operator MarketPlace 
-[Link to קגןוצ](https://medium.com/@hillayamir/installation-and-basic-configuration-for-redhats-advanced-cluster-management-drill-down-for-62d3d9c903f8)
+[Link to Medium](https://medium.com/@hillayamir/installation-and-basic-configuration-for-redhats-advanced-cluster-management-drill-down-for-62d3d9c903f8)
 
 
 # Exercise 5: Part 2 - Installing Kyverno with ACM
