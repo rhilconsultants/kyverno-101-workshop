@@ -1,0 +1,10 @@
+---
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: kyverno
+---
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: kyverno-channel
