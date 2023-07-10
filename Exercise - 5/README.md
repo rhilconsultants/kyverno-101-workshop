@@ -71,7 +71,33 @@ cat application.yaml
 
 oc apply -f .
 ```
-   
+
+5. **Label the local cluster with the label "install-kyverno=true" and see the application is being installed on it by ACM in the appication view**
+
+![image](https://github.com/rhilconsultants/kyverno-101-workshop/assets/60185557/dfe4096e-c70e-4b41-9a72-5035c5e2fa13)
+
+![image](https://github.com/rhilconsultants/kyverno-101-workshop/assets/60185557/d08a6455-de18-428a-beed-9b8f0ebc691f)
+
+![image](https://github.com/rhilconsultants/kyverno-101-workshop/assets/60185557/449cb31f-39d3-4c29-9c20-0833500720e2)
+
+![image](https://github.com/rhilconsultants/kyverno-101-workshop/assets/60185557/fb537c03-8fb1-4f84-bb86-d0fdc90bea6b)
+
+![image](https://github.com/rhilconsultants/kyverno-101-workshop/assets/60185557/856d71c6-86e9-4bfc-bd97-051c1ec0c655)
+
+![image](https://github.com/rhilconsultants/kyverno-101-workshop/assets/60185557/b361c6f7-f222-47e5-bb5f-4b8184528e3b)
+
+![image](https://github.com/rhilconsultants/kyverno-101-workshop/assets/60185557/dcc24b56-f21e-455e-be02-6ea91909810d)
+
+![image](https://github.com/rhilconsultants/kyverno-101-workshop/assets/60185557/abe51a8f-3b83-43a6-9308-dba252dd2655)
+
+
+
+
+
+
+
+
+
 
 Congratulations! You have successfully installed Kyverno on managed cluster using Red Hat Advanced Cluster Management.
 
