@@ -23,7 +23,7 @@ By using RHACM an Openshift administrator can:
 * Built-in compliance policies and audit checks, including GitOps Integration.
 * Immediate visibility into your compliance posture based on your defined standards
 
-# PICTURE HERE!!
+![image](https://github.com/rhilconsultants/kyverno-101-workshop/assets/60185557/3578410e-7aa5-4721-bc3a-20c08bbe116a)
 
 ## Kyverno & ACM Integration
 In order to deploy and manage the Kyverno application life-cycle using helm charts, we will “orchestrate” the local and remote deployment of Kyverno on top of our clusters; we will be using ACM and its application deployment mechanism.
@@ -36,14 +36,17 @@ You will need to create the following  5 YAML’s:
 * Subscription — Link between the channel and the placementRule and allow us to override some values of the helm chart if needed without editing the one in the repository
 * Application — Points to the subscription
 
+![image](https://github.com/rhilconsultants/kyverno-101-workshop/assets/60185557/eff43b1e-f92b-4cba-b7fc-a5af36e9e1ae)
+
 > Note! In our demo environment we are using a single Openshift cluster per-student that will function both as ACM Hub cluster and as the managed cluster that we will install Kyverno on. 
 > You can see the following [recorded demo](https://www.youtube.com/watch?v=2RkVDzvBN6w) that demonstrates how to import a remote cluster to be managed by RHACM
 
-# PICTURE HERE!!
+![image](https://github.com/rhilconsultants/kyverno-101-workshop/assets/60185557/31358634-b45e-45b3-b345-5d34474ca63e)
 
 ## Prerequisites
 - A running Kubernetes/Openshift cluster with at least 3 master nodes
 - Helm v3 or later installed on your local machine
+- ACM Hub installed on the Openshift Cluster (Part 1 of this exercise)
 
 ## Steps
 1. **Delete any old Kyverno installed on the cluster from the previous exercises**
@@ -56,16 +59,20 @@ helm uninstall kyvenro -n kyverno
 2. **Install RHACM on the cluster** (Done in Part 1)
 3. **Switch to ACM view from the Openshift Web UI**
 
-# PICTURE HERE!!
+![image](https://github.com/rhilconsultants/kyverno-101-workshop/assets/60185557/aa5b80f4-e6c3-47d3-914f-abe56d9ef74b)
+![image](https://github.com/rhilconsultants/kyverno-101-workshop/assets/60185557/4d200df9-6ce0-4d7b-b14c-58e6520dc1f1)
 
-4. **Go over the following YAMLs with the instractor**
+4. **Go over the following YAML with the instractor**
 ```bash
 cd /PATH/to/Exercise 5
-
-
 cat policy-install-kyverno.yaml
-oc apply -f .
+oc apply -f policy-install-kyverno.yaml
 ```
+
+![image](https://github.com/rhilconsultants/kyverno-101-workshop/assets/60185557/ce623ae1-5f37-44f8-87e7-5cffc26f58b8)
+
+![image](https://github.com/rhilconsultants/kyverno-101-workshop/assets/60185557/e0bc98d8-9d18-4bf5-929d-57cce13b4c87)
+
 
 5. **Label the local cluster with the label "install-kyverno=true" and see the application is being installed on it by ACM in the appication view**
 
@@ -85,8 +92,11 @@ oc apply -f .
 
 ![image](https://github.com/rhilconsultants/kyverno-101-workshop/assets/60185557/abe51a8f-3b83-43a6-9308-dba252dd2655)
 
+![image](https://github.com/rhilconsultants/kyverno-101-workshop/assets/60185557/65958f7d-591d-4846-93cc-23b50bb7df18)
 
 
+
+You can also see the entire process in the following [article](https://medium.com/@tamber/howto-deploy-custom-made-helm-charts-on-multi-openshift-clusters-w-advanced-cluster-management-9f34942bb0b4)
 
 
 
