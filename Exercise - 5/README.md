@@ -60,15 +60,10 @@ helm uninstall kyvenro -n kyverno
 
 4. **Go over the following YAMLs with the instractor**
 ```bash
-cd /PATH/to/Exercise 5/YAMLs
+cd /PATH/to/Exercise 5
 
 
-cat ns.yaml
-cat placementrule.yaml
-cat channel.yaml
-cat subscription.yaml
-cat application.yaml
-
+cat policy-install-kyverno.yaml
 oc apply -f .
 ```
 
