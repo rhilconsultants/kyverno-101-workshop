@@ -42,7 +42,10 @@ You will need to create the following  5 YAML’s:
 > You can see the following [recorded demo](https://www.youtube.com/watch?v=2RkVDzvBN6w) that demonstrates how to import a remote cluster to be managed by RHACM
 
 > Also Note! In this exercise we are using a uniqe method of deploying ACM Application on ACM Hub using ACM Governance Policy mechanisem. We are doing this because of a CRD that Kyverno requiers that we cannot edit with the regular Application Lifecycle of RHACM, and it also keeps all of our yamls in a single file in an organized manner.
-![image](https://github.com/rhilconsultants/kyverno-101-workshop/assets/60185557/31358634-b45e-45b3-b345-5d34474ca63e)
+> ![image](https://github.com/rhilconsultants/kyverno-101-workshop/assets/60185557/714f3f01-c2df-4ad8-8f66-d810aa899a87)
+> ![image](https://github.com/rhilconsultants/kyverno-101-workshop/assets/60185557/6379a7b5-2f0b-41d9-af48-576144b3536a)
+
+
 
 ## Prerequisites
 - A running Kubernetes/Openshift cluster with at least 3 master nodes
