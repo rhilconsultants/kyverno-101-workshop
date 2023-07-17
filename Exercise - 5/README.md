@@ -43,7 +43,8 @@ You will need to create the following  5 YAML’s:
 
 > Also Note! In this exercise we are using a uniqe method of deploying ACM Application on ACM Hub using ACM Governance Policy mechanisem. We are doing this because of a CRD that Kyverno requiers that we cannot edit with the regular Application Lifecycle of RHACM, and it also keeps all of our yamls in a single file in an organized manner.
 > ![image](https://github.com/rhilconsultants/kyverno-101-workshop/assets/60185557/714f3f01-c2df-4ad8-8f66-d810aa899a87)
-> ![image](https://github.com/rhilconsultants/kyverno-101-workshop/assets/60185557/6379a7b5-2f0b-41d9-af48-576144b3536a)
+> ![image](https://github.com/rhilconsultants/kyverno-101-workshop/assets/60185557/3b5e003a-200e-4fe2-a6c0-b836864c9c6d)
+
 
 
 
