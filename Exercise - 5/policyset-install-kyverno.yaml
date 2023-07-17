@@ -1,8 +1,8 @@
-apiVersion: policy.open-cluster-management.io/v1beta1
+apiVersion: policy.open-cluster-management.io/v1
 kind: PolicySet
 metadata:
   name: kyverno-installation
-  namespace: default
+  namespace: kyverno
 spec:
   description: Deploy everything for Kyverno installation on managed clusters.
   policies:

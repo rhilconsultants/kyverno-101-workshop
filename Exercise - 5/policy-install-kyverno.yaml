@@ -165,6 +165,7 @@ placementRef:
 subjects:
   - name: policy-install-kyverno
     kind: Policy
+    namespace: kyverno
     apiGroup: policy.open-cluster-management.io
 ---
 apiVersion: apps.open-cluster-management.io/v1

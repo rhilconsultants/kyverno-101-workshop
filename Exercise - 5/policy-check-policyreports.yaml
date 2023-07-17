@@ -9,6 +9,7 @@ apiVersion: policy.open-cluster-management.io/v1
 kind: Policy
 metadata:
   name: policy-check-policyreports
+  namespace: kyverno
   annotations:
     policy.open-cluster-management.io/standards: Kyverno-101-Workshop
     policy.open-cluster-management.io/categories: Kyverno-Installation-Requirments
@@ -55,12 +56,14 @@ apiVersion: policy.open-cluster-management.io/v1
 kind: PlacementBinding
 metadata:
   name: binding-policy-check-policyreports
+  namespace: kyverno
 placementRef:
-  name: kyverno-placement-1
+  name: placement-kyverno-placement-global
   namespace: kyverno
   kind: PlacementRule
   apiGroup: apps.open-cluster-management.io
 subjects:
 - name: policy-check-policyreports
   kind: Policy
+  namespace: kyverno
   apiGroup: policy.open-cluster-management.io
