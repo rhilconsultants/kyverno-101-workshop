@@ -3,8 +3,8 @@ kind: Policy
 metadata:
   name: policy-install-kyverno
   annotations:
-    policy.open-cluster-management.io/standards: NIST-CSF
-    policy.open-cluster-management.io/categories: CM Configuration Management
+    policy.open-cluster-management.io/standards: Kyverno-101-Workshop
+    policy.open-cluster-management.io/categories: Kyverno-Installation-Requirments
     policy.open-cluster-management.io/controls: CM-2 Baseline Configuration
 spec:
   remediationAction: enforce 
