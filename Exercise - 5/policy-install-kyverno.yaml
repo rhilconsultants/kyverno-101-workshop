@@ -2,6 +2,7 @@ apiVersion: policy.open-cluster-management.io/v1
 kind: Policy
 metadata:
   name: policy-install-kyverno
+  namespace: kyverno
   annotations:
     policy.open-cluster-management.io/standards: Kyverno-101-Workshop
     policy.open-cluster-management.io/categories: Kyverno-Installation-Requirments
@@ -155,9 +156,11 @@ apiVersion: policy.open-cluster-management.io/v1
 kind: PlacementBinding
 metadata:
   name: binding-policy-install-kyverno
+  namespace: kyverno
 placementRef:
   name: placement-policy-install-kyverno
   kind: PlacementRule
+  namespace: kyverno
   apiGroup: apps.open-cluster-management.io
 subjects:
   - name: policy-install-kyverno
@@ -168,6 +171,7 @@ apiVersion: apps.open-cluster-management.io/v1
 kind: PlacementRule
 metadata:
   name: placement-policy-install-kyverno
+  namespace: kyverno
 spec:
   clusterConditions:
   - status: "True"
@@ -175,3 +179,83 @@ spec:
   clusterSelector:
     matchExpressions:
       - {key: local-cluster, operator: In, values: ["true"]}
+---        
+# OCP 4.12 + Kyverno 1.10 SCC fixes
+apiVersion: policy.open-cluster-management.io/v1
+kind: Policy
+metadata:
+  name: policy-rbac-kyverno
+  namespace: kyverno
+  annotations:
+    policy.open-cluster-management.io/standards: Kyverno-101-Workshop
+    policy.open-cluster-management.io/categories: Kyverno-Installation-Requirments
+    policy.open-cluster-management.io/controls: CM-2 Baseline Configuration
+spec:
+  remediationAction: enforce 
+  disabled: false
+  policy-templates:
+    # Grant cluster admin to kyverno's serviceaccounts
+    - objectDefinition:
+        apiVersion: policy.open-cluster-management.io/v1
+        kind: ConfigurationPolicy
+        metadata:
+          name: policy-rbac-kyverno
+        spec:
+          remediationAction: inform
+          severity: low
+          object-templates:
+            - complianceType: musthave
+              objectDefinition:
+                apiVersion: rbac.authorization.k8s.io/v1
+                kind: ClusterRoleBinding
+                metadata:
+                  creationTimestamp: null
+                  name: cluster-admin-kyverno-serviceaccounts
+                roleRef:
+                  apiGroup: rbac.authorization.k8s.io
+                  kind: ClusterRole
+                  name: cluster-admin
+                subjects:
+                - kind: ServiceAccount
+                  name: kyverno-admission-controller
+                  namespace: kyverno
+                - kind: ServiceAccount
+                  name: kyverno-background-controller
+                  namespace: kyverno
+                - kind: ServiceAccount
+                  name: kyverno-cleanup-controller
+                  namespace: kyverno
+                - kind: ServiceAccount
+                  name: kyverno-reports-controller
+                  namespace: kyverno
+---
+apiVersion: policy.open-cluster-management.io/v1
+kind: PlacementBinding
+metadata:
+  name: binding-policy-rbac-kyverno
+  namespace: kyverno
+placementRef:
+  name: placement-kyverno-placement-global
+  namespace: kyverno
+  kind: PlacementRule
+  apiGroup: apps.open-cluster-management.io
+subjects:
+  - name: policy-rbac-kyverno
+    kind: Policy
+    namespace: kyverno
+    apiGroup: policy.open-cluster-management.io
+---
+apiVersion: apps.open-cluster-management.io/v1
+kind: PlacementRule
+metadata:
+  name: placement-kyverno-placement-global
+  namespace: kyverno
+  labels:
+    app: kyverno
+spec:
+  clusterConditions:
+  - status: "True"
+    type: ManagedClusterConditionAvailable
+  clusterSelector:
+    matchExpressions:
+    - {key: install-kyverno, operator: In, values: ["true"]}
