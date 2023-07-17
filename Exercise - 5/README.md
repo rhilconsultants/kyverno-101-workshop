@@ -98,14 +98,25 @@ oc apply -f policy-install-kyverno.yaml
 
 ![image](https://github.com/rhilconsultants/kyverno-101-workshop/assets/60185557/65958f7d-591d-4846-93cc-23b50bb7df18)
 
+6. **Add custom configmap for excluding objects & namespaces from Kyverno**
+```bash
+# Go over the YAML with the instructor first
+# Notice the placmentrulebinding references a placmentrule created in the previous policy and it's the same one that requires "install-kyverno=true" label on the managed cluster.
+cat policy-kyverno-config-exclude-resources.yaml
 
+oc apply -f policy-kyverno-config-exclude-resources.yaml
+```
+
+7. **Add the policy that will inform you on drifts from future Kyverno policies we will see in the next exercise**
+```bash
+# Go over the YAML with the instructor first
+# Notice the placmentrulebinding references a placmentrule created in the previous policy and it's the same one that requires "install-kyverno=true" label on the managed cluster.
+cat policy-check-policyreports.yaml
+
+oc apply -f policy-check-policyreports.yaml
+```
 
 You can also see the entire process in the following [article](https://medium.com/@tamber/howto-deploy-custom-made-helm-charts-on-multi-openshift-clusters-w-advanced-cluster-management-9f34942bb0b4)
-
-
-
-
-
 
 
 Congratulations! You have successfully installed Kyverno on managed cluster using Red Hat Advanced Cluster Management.
