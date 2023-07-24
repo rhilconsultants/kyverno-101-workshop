@@ -101,6 +101,9 @@ oc apply -f policy-install-kyverno.yaml
 
 ![image](https://github.com/rhilconsultants/kyverno-101-workshop/assets/60185557/23eb96d1-2807-49a9-bd52-e60e6509b406)
 
+![image](https://github.com/rhilconsultants/kyverno-101-workshop/assets/60185557/afea2e79-fc28-4c22-bbb4-155166267408)
+
+
 
 6. **Add custom configmap for excluding objects & namespaces from Kyverno**
 ```bash
