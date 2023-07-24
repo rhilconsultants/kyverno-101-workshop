@@ -1,0 +1,58 @@
+{{- if .Values.prod }}
+apiVersion: policy.open-cluster-management.io/v1
+kind: Policy
+metadata:
+  name: policy-disallow-latest-tag-enforce
+  namespace: kyverno
+  annotations:
+    policy.open-cluster-management.io/standards: Kyverno-Benchmark-Enforce
+    policy.open-cluster-management.io/categories: Prod
+    policy.open-cluster-management.io/controls: CM-2 Baseline Configuration
+spec:
+  remediationAction: enforce
+  disabled: false
+  policy-templates:
+    - objectDefinition:
+        apiVersion: policy.open-cluster-management.io/v1
+        kind: ConfigurationPolicy
+        metadata:
+          name: policy-disallow-latest-tag-enforce
+        spec:
+          remediationAction: inform # will be overridden by remediationAction in parent policy
+          severity: low
+          object-templates:
+            - complianceType: musthave
+              objectDefinition:
+{{- .Files.Get "files/disallow-latest-tag-enforce.yaml" | nindent 16 }}
+---
+apiVersion: policy.open-cluster-management.io/v1
+kind: PlacementBinding
+metadata:
+  name: binding-placement-dev-ocp-kyverno-benchmark
+  namespace: kyverno
+placementRef:
+  name: placement-prod-ocp-kyverno-benchmark
+  namespace: kyverno
+  kind: PlacementRule
+  apiGroup: apps.open-cluster-management.io
+subjects:
+  - name: policy-disallow-latest-tag-enforce
+    kind: Policy
+    namespace: kyverno
+    apiGroup: policy.open-cluster-management.io
+---
+apiVersion: apps.open-cluster-management.io/v1
+kind: PlacementRule
+metadata:
+  name: placement-prod-ocp-kyverno-benchmark
+  namespace: kyverno
+  labels:
+    app: kyverno
+spec:
+  clusterConditions:
+  - status: "True"
+    type: ManagedClusterConditionAvailable
+  clusterSelector:
+    matchExpressions:
+    - {key: prod-ocp-kyverno-benchmark, operator: In, values: ["true"]}
+{{- end }}
