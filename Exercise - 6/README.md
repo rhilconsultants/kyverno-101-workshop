@@ -40,8 +40,9 @@ helm template . -f prod-values.yaml
 
 **6. While logged in to ACM, install the helm chart with the two values**
 ```bash
-helm install dev-benchmark . -f dev-values.yaml
-helm install prod-benchmark . -f prod-values.yaml
+helm install dev-benchmark . -f dev-values.yaml -n kyverno
+helm install prod-benchmark . -f prod-values.yaml  -n kyverno
+helm list -n kyverno
 ```
 
 **7. Tag the local cluster with the label of the dev-benchmark and see the results**
