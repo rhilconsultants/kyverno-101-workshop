@@ -7,6 +7,8 @@ Deploy and test a Kyverno policy using ACM on a remote cluster using ACM Policie
 As shown in Exercise 5, we've encapsulated Kyverno Application installation inside ACM Policys so ACM will install the Application on itself and then on the remote clusters.
 We are going to use the same method here, but now instead of encapsulate the entire kyvenro application, we are going to encapsulate only the Kyverno policy yaml in a ACM policy, that ACM will deploy on our chosen clusters based on specific label that we will add to the remote clusters. 
 
+![image](https://github.com/rhilconsultants/kyverno-101-workshop/assets/60185557/f50b22df-c4b5-4b8e-a2fd-1f162073afde)
+
 # Prerequisites
 1. Exercise 5 
 
