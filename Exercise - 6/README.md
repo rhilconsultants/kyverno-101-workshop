@@ -13,17 +13,6 @@ We are going to use the same method here, but now instead of encapsulate the ent
 1. Exercise 5
 2. Helm
 
-## The policies we will test
-
-  - **Policy #1**
-    * **Name:** Disallow Latest Tag
-    * **Type:** Validate
-    * **Description:** The ':latest' tag is mutable and can lead to unexpected errors if the image changes. A best practice is to use an immutable tag that maps to a specific version of an application Pod. This policy validates that the image specifies a tag and that it is not called `latest`.
-    * [Kyverno.io Link](https://kyverno.io/policies/best-practices/disallow-latest-tag/disallow-latest-tag/)
-    * [GitHub Link](https://github.com/kyverno/policies/tree/main/best-practices/disallow-latest-tag)
-    > Note! The GitHub link holds preconfigured testing YAMLs you can use
-    * [GitHub raw Link](https://raw.githubusercontent.com/kyverno/policies/main/best-practices/disallow-latest-tag/disallow-latest-tag.yaml)
-
 ## Steps
 **1. Examin one of the policies in the helm chart and explain what you see to the instructor**
 ```bash
