@@ -75,20 +75,20 @@ cat > deployment.yaml << EOF
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: nginx
+  name: busybox
 spec:
   selector:
     matchLabels:
-      app: nginx
+      app: busybox
   replicas: 1
   template:
     metadata:
       labels:
-        app: nginx
+        app: busybox
     spec:
       containers:
-      - name: nginx
-        image: nginx:latest
+      - name: busybox
+        image: busybox:latest
         ports:
         - containerPort: 80
 EOF
@@ -118,7 +118,7 @@ oc apply -f deployment.yaml -n test
 # OUTPUT
 # Error from server: error when creating "deployment.yaml": admission webhook "validate.kyverno.svc-fail" denied the request: 
 
-# policy Deployment/test/nginx for resource violation: 
+# policy Deployment/test/busybox for resource violation: 
 
 # disallow-latest-tag:
 #   autogen-validate-image-tag: 'validation error: Using a mutable image tag e.g. ''latest''
