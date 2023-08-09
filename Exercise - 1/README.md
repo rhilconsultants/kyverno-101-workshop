@@ -54,7 +54,7 @@ To install Kyverno, a Kubernetes native policy management tool, using the Helm p
 5. **Add the Kyverno Helm chart from the local folder:**
    - From the `kyverno` directory, run the following command to install the Kyverno Helm chart from the local folder:
    ```bash
-   helm install kyverno . -n kyverno --create-namespace
+   helm install kyverno . -f values.yaml -n kyverno --create-namespace
    ```
    - Wait for the installation to complete. You can check the status using `helm ls -n kyverno` or `kubectl get pods -n kyverno` to see if all the Kyverno components are running.
    - Desired Output:
