@@ -105,6 +105,7 @@ To install Policy Reporter UI on a Kubernetes/Openshift cluster from a local Hel
 
 7. Access the Policy Reporter UI page
    ```bash
+   oc create route edge --service=policy-reporter-ui -n kyverno
    oc get route -n kyverno --no-headers | awk '{print "https://"$2}'
    ```
 
