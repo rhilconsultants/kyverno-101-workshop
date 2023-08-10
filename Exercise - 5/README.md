@@ -59,6 +59,7 @@ You will need to create the following  5 YAML’s:
 oc login <OCP Cluster>
 helm list --all-namespaces | grep kyverno
 helm uninstall kyvenro -n kyverno
+helm uninstall policy-reporter -n kyverno
 ```
    
 2. **Install RHACM on the cluster** (Done in Part 1)
