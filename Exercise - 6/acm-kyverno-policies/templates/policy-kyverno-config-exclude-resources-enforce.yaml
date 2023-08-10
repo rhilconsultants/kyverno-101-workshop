@@ -28,7 +28,7 @@ spec:
 apiVersion: policy.open-cluster-management.io/v1
 kind: PlacementBinding
 metadata:
-  name: binding-placement-dev-ocp-kyverno-benchmark
+  name: binding-placement-prod-ocp-kyverno-benchmark
   namespace: kyverno
 placementRef:
   name: placement-prod-ocp-kyverno-benchmark
