@@ -32,13 +32,11 @@ metadata:
   namespace: kyverno
 placementRef:
   name: placement-dev-ocp-kyverno-benchmark
-  namespace: kyverno
   kind: PlacementRule
   apiGroup: apps.open-cluster-management.io
 subjects:
   - name: policy-disallow-latest-tag-audit
     kind: Policy
-    namespace: kyverno
     apiGroup: policy.open-cluster-management.io
 ---
 apiVersion: apps.open-cluster-management.io/v1
